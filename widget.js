@@ -1622,7 +1622,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
                                 case 'G21':
                                 case 'G20':
-                                    var t = value === 'G21' ? 'mm' : 'inch';
+                                    var t = value == 'G21' ? 'mm' : 'inch';
                                     if(that.controller_units !== t){
                                         that.controller_units = t;
                                         $('.stat-units').html(that.controller_units);
