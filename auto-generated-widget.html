@@ -1937,7 +1937,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
         },
         grblResponse: function(recvline) {
-            //console.log("GRBL: Message Received - " + recvline.dataline);
+            console.log("GRBL: Message Received - " + recvline.dataline);
             if (!(recvline.dataline) || recvline.dataline == '\n') {
                 //console.log("GRBL: got recvline but it's not a dataline, so returning.");
                 return true;
