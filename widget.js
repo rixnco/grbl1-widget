@@ -703,7 +703,9 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                 var pattern = /([0-9.]+[a-z]?)/i;
                 var match = pattern.exec(ver);
                 ver = match[1] == undefined ? ver : match[1];
-                if (this.version != ver) {
+                v= this.version;
+
+                if (v != ver) {
                     this.version = ver;
                     $('#com-chilipeppr-widget-grbl .panel-title').text("GRBL (" + this.version + ")"); //update ui 
                     chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/grblVersion", this.version);
