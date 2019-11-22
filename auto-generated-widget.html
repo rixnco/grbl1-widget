@@ -861,7 +861,8 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             }
             if(options.grblVersion == 'undefined') options.grblVersion = "";
             this.options = options;
-            this.setVersion(this.options.grblVersion);
+            //this.setVersion(this.options.grblVersion);
+            this.version= '';
             this.jogFeedRate = parseInt(this.options.jogFeedRate, 10);
             if (isNaN(this.jogFeedRate)) this.jogFeedRate = 200;
             this.setJogRate(this.jogFeedRate);
