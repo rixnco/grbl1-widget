@@ -822,7 +822,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             return this.version.substring(0, 1) == '1' || $('#com-chilipeppr-widget-grbl .grbl-verbose').hasClass("enabled");
         },
         setVersion: function(ver) {
-            this.grblConsole('setting version to ' + gt.ver);
+            this.grblConsole('setting version to ' + ver);
             if (ver !== "") {
                 var pattern = /([0-9.]+[a-z]?)/i;
                 var match = pattern.exec(ver);
