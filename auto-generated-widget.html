@@ -1736,7 +1736,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                                     break;
                                 case 'G90':
                                 case 'G91':
-                                    var distance = value == 'G90' ? 'Absolute' : 'Incremental';
+                                    var distance = value === 'G90' ? 'Absolute' : 'Incremental';
                                     if (distance != that.distance) {
                                         that.distance = distance;
                                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/distance", that.distance);
@@ -1746,7 +1746,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
                                 case 'G21':
                                 case 'G20':
-                                    var t = (value === 'G21') ? 'mm' : 'inch';
+                                    var t = value === 'G21' ? 'mm' : 'inch';
                                     if(that.controller_units !== t){
                                         that.controller_units = t;
                                         $('.stat-units').html(that.controller_units);
