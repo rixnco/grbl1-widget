@@ -631,10 +631,10 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             chilipeppr.subscribe("/com-chilipeppr-widget-gcode/onplay", this, this.trackGcodeLines);
             chilipeppr.subscribe("/com-chilipeppr-widget-gcode/onstop", this, this.restartStatusInterval);
             chilipeppr.subscribe("/com-chilipeppr-widget-gcode/onpause", this, function(state, metadata) {
-                if (state === false) {
+                if (state == false) {
                     this.restartStatusInterval();
                 } //when gcode widget pauses, go back to interval querying $G
-                else if (state === true) {
+                else if (state == true) {
                     this.trackGcodeLines();
                 } //when gcode widget resumes, begin tracking line count to embed $G into buffer.
             });
@@ -1069,7 +1069,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             */
         },
         updateWorkUnits: function(units) {
-            var wm = units === 'mm' ? 0 : 1;
+            var wm = units == 'mm' ? 0 : 1;
             
             if (this.work_mode != wm) {
                 this.work_mode = wm;
@@ -1095,9 +1095,9 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
         updateReportUnits: function() {
             var rm = this.report_mode;
             if(this.config[13] !== undefined){
-                if(this.config[13][0] === 0){
+                if(this.config[13][0] == 0){
                     this.report_mode = 0;
-                }else if(this.config[13][0] === 1){
+                }else if(this.config[13][0] == 1){
                     this.report_mode = 1;
                 }
             } else {
@@ -1121,7 +1121,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             setTimeout(function() {
                 that.connectedToPort = true;
                 chilipeppr.publish("/com-chilipeppr-widget-serialport/requestSingleSelectPort", ""); //Request port info
-                if (that.version === "") {
+                if (that.version == "") {
                     that.sendCode("*init*\n"); //send request for grbl init line (grbl was already connected to spjs when chilipeppr loaded and no init was sent back.
                     that.sendCode(String.fromCharCode(36) + "I\n");
                 }
@@ -1211,7 +1211,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             }*/
             chilipeppr.subscribe("/com-chilipeppr-widget-serialport/jsonSend", this, function(msg) {
                 // ERROR: msg.Id could be undefined
-                if (msg.Id !== undefined && msg.Id.slice(1) % 5 === 0)
+                if (msg.Id !== undefined && msg.Id.slice(1) % 5 == 0)
                     this.getControllerInfo(); //send a $G every 5 lines of the gcode file.
             });
         },
@@ -1220,9 +1220,9 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             // chilipeppr.unsubscribe("/com-chilipeppr-widget-serialport/jsonSend", this.trackGcodeLines);
 
             var that = this;
-            if (this.g_status_reports === null) { //confirm no setInterval is currently running.
+            if (this.g_status_reports == null) { //confirm no setInterval is currently running.
                 that.g_status_reports = setInterval(function() {
-                    //if (that.q_count === 0) { //only send $G if the queue is clear
+                    //if (that.q_count == 0) { //only send $G if the queue is clear
                         that.getControllerInfo(); //send a $G every 2 seconds
                     /*}
                     else {
@@ -1390,7 +1390,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             $('.com-chilipeppr-grbl-state').text(that.status); //Update UI
                         }
 
-                        if (that.alarm !== true && that.status === "Alarm") {
+                        if (that.alarm !== true && that.status == "Alarm") {
                             that.alarm = true;
                             $('.stat-state').text("Alarm - Click To Reset (CTRL+X)");
                             $('.stat-state').click(function() {
@@ -1772,7 +1772,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             var coords = bits[0].split(',');
                             var obj = {};
                             ['x','y','z'].forEach(function(value,index){
-                                if(this.controller)
+                                if(this.controller_units)
                                 obj[index] = parseFloat(coords[index]);
                                 if(this.report_mode == 1 && this.controller_units == 'inch'){
                                 } else 
@@ -1833,19 +1833,19 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                 if (msg.indexOf("PRB:") >= 0) {
                     var coords = msg.replace(/\[PRB:|\]|\n/g, "").split(",");
                     //use current offsets to bring this value back to work coordinate system for proberesponse.
-                    if (this.work_mode === this.report_mode)
+                    if (this.work_mode == this.report_mode)
                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/proberesponse", {
                             "x": parseFloat(coords[0]) - this.offsets.x,
                             "y": parseFloat(coords[1]) - this.offsets.y,
                             "z": parseFloat(coords[2]) - this.offsets.z
                         });
-                    else if (this.work_mode === 1 && this.report_mode === 0) //work is inch, reporting in mm
+                    else if (this.work_mode == 1 && this.report_mode == 0) //work is inch, reporting in mm
                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/proberesponse", {
                         "x": this.toInch(parseFloat(coords[0]) - this.offsets.x),
                         "y": this.toInch(parseFloat(coords[1]) - this.offsets.y),
                         "z": this.toInch(parseFloat(coords[2]) - this.offsets.z)
                     });
-                    else if (this.work_mode === 0 && this.report_mode === 1) //work is mm, reporting in inches
+                    else if (this.work_mode == 0 && this.report_mode == 1) //work is mm, reporting in inches
                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/proberesponse", {
                         "x": this.toMM(parseFloat(coords[0]) - this.offsets.x),
                         "y": this.toMM(parseFloat(coords[1]) - this.offsets.y),
@@ -1858,13 +1858,13 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                     //change colons to commas & split string
                     var rpt_array = msg.replace(/:/g, ",").split(",");
 
-                    if (this.version === '0.8a')
+                    if (this.version == '0.8a')
                         $('.stat-state').text("Too Old - Upgrade GRBL!");
                     else
                     if (rpt_array[0] !== this.status) {
                         this.status = rpt_array[0];
                         chilipeppr.publish('/com-chilipeppr-interface-cnccontroller/status', this.status);
-                        if (this.alarm !== true && this.status === "Alarm") {
+                        if (this.alarm !== true && this.status == "Alarm") {
                             this.alarm = true;
                             $('.stat-state').text("Alarm - Click To Reset (CTRL+X)");
                             var that = this;
@@ -1899,7 +1899,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             this.last_machine.z = parseFloat(rpt_array[i + 3]);
                             this.last_machine.a = null;
                             this.last_machine.type = "machine";
-                            if (this.report_mode === 1)
+                            if (this.report_mode == 1)
                                 this.last_machine.unit = "inch";
                             else
                                 this.last_machine.unit = "mm";
@@ -1916,7 +1916,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             this.last_work.z = parseFloat(rpt_array[i + 3]);
                             this.last_work.a = null;
                             this.last_work.type = "work";
-                            if (this.report_mode === 1)
+                            if (this.report_mode == 1)
                                 this.last_work.unit = "inch";
                             else
                                 this.last_work.unit = "mm";
@@ -1938,9 +1938,9 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                         this.offsets.z = this.last_machine.z - this.last_work.z; //z offset
                     }
 
-                    if (WPos_flag === true)
+                    if (WPos_flag == true)
                         this.publishAxisStatus(this.last_work);
-                    else if (MPos_flag === true)
+                    else if (MPos_flag == true)
                         this.publishAxisStatus(this.last_machine);
                     else //as failsafe send NAN so user knows that the coordinates are not displaying properly -- could handle this error on the receiving widget side.
                         this.publishAxisStatus({
@@ -2038,7 +2038,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                     msg = msg.replace(/\[|\]|\n/g, ""); //remove brackets
                     var msg_array = msg.split(/\s|,|:/g); //split to array on space, comma, or colon
                     //check for units change, save new units state and publish units to other widgets
-                    if ((this.controller_units !== "mm" && msg_array[3] === "G21")) {
+                    if ((this.controller_units !== "mm" && msg_array[3] == "G21")) {
                         this.controller_units = "mm";
                         this.grblConsole("we have a unit change. publish it. units:", this.controller_units);
                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/units", this.controller_units);
@@ -2054,7 +2054,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                                 "z": 0.000
                             });
                     }
-                    else if ((this.controller_units !== "inch" && msg_array[3] === "G20")) {
+                    else if ((this.controller_units !== "inch" && msg_array[3] == "G20")) {
                         this.controller_units = "inch";
                         this.grblConsole("we have a unit change. publish it. units:", this.controller_units);
                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/units", this.controller_units);
@@ -2086,7 +2086,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                     $('.stat-spindle').html(this.gcode_lookup[msg_array[7]]);
                     $('.stat-coolant').html(this.gcode_lookup[msg_array[8]]);
                     msg_array[10] = parseFloat(msg_array[10].substring(1));
-                    $('.stat-feedrate').html(this.controller_units === "inch" ? (parseFloat(msg_array[10]) / 25.4).toFixed(2) : msg_array[10].toFixed(2));
+                    $('.stat-feedrate').html(this.controller_units == "inch" ? (parseFloat(msg_array[10]) / 25.4).toFixed(2) : msg_array[10].toFixed(2));
                 }
             }
         },
@@ -2155,7 +2155,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
         },
         addError: function(line, msg) {
             var i;
-            if (this.err_log.length === 0)
+            if (this.err_log.length == 0)
                 i = 0;
             else
                 i = this.err_log.length - 1;
