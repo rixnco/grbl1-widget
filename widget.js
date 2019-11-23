@@ -698,12 +698,14 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             return this.version.substring(0, 1) == '1' || $('#com-chilipeppr-widget-grbl .grbl-verbose').hasClass("enabled");
         },
         setVersion: function(ver) {
-            this.grblConsole('setting version to ' + ver);
+            console.log('setting version to ' + ver);
             if (ver !== "") {
                 var pattern = /([0-9.]+[a-z]?)/i;
                 var match = pattern.exec(ver);
                 ver = match[1] == undefined ? ver : match[1];
-                if (this.version != ver) {
+                var v= this.version;
+
+                if (v != ver) {
                     this.version = ver;
                     $('#com-chilipeppr-widget-grbl .panel-title').text("GRBL (" + this.version + ")"); //update ui 
                     chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/grblVersion", this.version);
@@ -735,7 +737,8 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             }
             if(options.grblVersion == 'undefined') options.grblVersion = "";
             this.options = options;
-            this.version = this.options.grblVersion;
+            //this.setVersion(this.options.grblVersion);
+            this.version= '';
             this.jogFeedRate = parseInt(this.options.jogFeedRate, 10);
             if (isNaN(this.jogFeedRate)) this.jogFeedRate = 200;
             this.setJogRate(this.jogFeedRate);
@@ -1612,7 +1615,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                                     break;
                                 case 'G90':
                                 case 'G91':
-                                    var distance = value == 'G90' ? 'Absolute' : 'Incremental';
+                                    var distance = value === 'G90' ? 'Absolute' : 'Incremental';
                                     if (distance != that.distance) {
                                         that.distance = distance;
                                         chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/distance", that.distance);
@@ -1622,7 +1625,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
                                 case 'G21':
                                 case 'G20':
-                                    var t = value == 'G21' ? 'mm' : 'inch';
+                                    var t = value === 'G21' ? 'mm' : 'inch';
                                     if(that.controller_units !== t){
                                         that.controller_units = t;
                                         $('.stat-units').html(that.controller_units);
@@ -1813,7 +1816,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
         },
         grblResponse: function(recvline) {
-            //console.log("GRBL: Message Received - " + recvline.dataline);
+            console.log("GRBL: Message Received - " + recvline.dataline);
             if (!(recvline.dataline) || recvline.dataline == '\n') {
                 //console.log("GRBL: got recvline but it's not a dataline, so returning.");
                 return true;
