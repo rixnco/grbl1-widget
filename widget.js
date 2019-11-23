@@ -1789,6 +1789,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                                 }
                                 obj[index] = obj[index] - this.offsets[value];
                             }, that);
+														
                             obj.status = 'probeSuccess';
                             chilipeppr.publish("/com-chilipeppr-interface-cnccontroller/proberesponse", obj);
                         }
