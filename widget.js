@@ -1776,18 +1776,18 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             var obj = {};
                             ['x','y','z'].forEach(function(value,index){
                                 if(this.controller_units)
-                                obj[index] = parseFloat(coords[index]);
+                                obj[value] = parseFloat(coords[index]);
                                 if(this.report_mode == 1 && this.controller_units == 'inch'){
                                 } else 
                                 if(this.report_mode == 0 && this.controller_units == 'mm'){
                                 } else 
                                 if(this.report_mode == 0 && this.controller_units == 'inch'){
-                                    obj[index] = (obj[index] * 25.4);
+                                    obj[value] = (obj[value] * 25.4);
                                 } else 
                                 if(this.report_mode == 1 && this.controller_units == 'mm'){
-                                    obj[index] = (obj[index] / 25.4);
+                                    obj[value] = (obj[value] / 25.4);
                                 }
-                                obj[index] = obj[index] - this.offsets[value];
+                                obj[value] = obj[value] - this.offsets[value];
                             }, that);
 														
                             obj.status = 'probeSuccess';
