@@ -726,7 +726,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
 
             if (true && options) {
                 options = $.parseJSON(options);
-                //console.log("GRBL: just evaled options: ", options);
+                console.log("GRBL: just evaled options: ", options);
             }
             else {
                 options = {
@@ -871,8 +871,8 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
                             var val = $(this).val();
                             $('.stat-jogFeedRate').text(val);
                             jogFeedEditing = false;
-                            var jFR = parseInt(val, 10);
-                            chilipeppr.publish('/com-chilipeppr-interface-cnccontroller/jogFeedRate', jFR);
+                            that.jogFeedRate= parseInt(val, 10);
+                            chilipeppr.publish('/com-chilipeppr-interface-cnccontroller/jogFeedRate', that.jogFeedRate);
                             $(this).remove();
                             that.saveOptionsCookie();
                         })
