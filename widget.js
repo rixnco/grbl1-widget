@@ -567,7 +567,7 @@ cpdefine("inline:com-chilipeppr-widget-grbl", ["chilipeppr_ready", "jquerycookie
             return rObj;
         },
         init: function() {
-            console.error('grbl: reference');
+            console.log('grbl: init');
             var query = window.location.search.substring(1);
             var vars = query.split("&");
             vars.forEach(function(item, index) {
